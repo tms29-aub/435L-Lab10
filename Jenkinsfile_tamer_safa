@@ -17,37 +17,37 @@ pipeline {
             steps {
                 script {
                     if (!fileExists("${VIRTUAL_ENV}")) {
-                        sh "python3 -m venv ${VIRTUAL_ENV}"
+                        sh "${PYTHON} -m venv ${VIRTUAL_ENV}"
                     }
                 }
-                sh "source ${VIRTUAL_ENV}/bin/activate && pip install -r requirements.txt"
+                sh "${VIRTUAL_ENV}/bin/pip install -r requirements.txt"
             }
         }
         
         stage('Lint') { 
             steps {
-                sh "source ${VIRTUAL_ENV}/bin/activate && flake8 app.py"
+                sh "${VIRTUAL_ENV}/bin/flake8 app.py"
             }
         }
 
         stage('Test') { 
             steps {
-                sh "source ${VIRTUAL_ENV}/bin/activate && pytest"
+                sh "${VIRTUAL_ENV}/bin/pytest"
             }
         }
 
         stage('Coverage') {
             steps {
-                sh "source ${VIRTUAL_ENV}/bin/activate && coverage run -m pytest"
-                sh "source ${VIRTUAL_ENV}/bin/activate && coverage report -m"
-                sh "source ${VIRTUAL_ENV}/bin/activate && coverage html" // Generates HTML report
+                sh "${VIRTUAL_ENV}/bin/coverage run -m pytest"
+                sh "${VIRTUAL_ENV}/bin/coverage report -m"
+                sh "${VIRTUAL_ENV}/bin/coverage html" // Generates HTML report
                 archiveArtifacts artifacts: 'htmlcov/**', allowEmptyArchive: true
             }
         }
 
         stage('SecurityScan') {
             steps {
-                sh "source ${VIRTUAL_ENV}/bin/activate && bandit -r ."
+                sh "${VIRTUAL_ENV}/bin/bandit -r ."
             }
         }
 
