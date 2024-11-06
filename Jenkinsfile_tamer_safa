@@ -28,9 +28,29 @@ pipeline {
             }
         }
 
+        stage('Coverage') {
+            steps {
+                sh "source ${VIRTUAL_ENV}/bin/activate && coverage run -m pytest"
+                sh "source ${VIRTUAL_ENV}/bin/activate && coverage report -m"
+                sh "source ${VIRTUAL_ENV}/bin/activate && coverage html" // Generates HTML report
+                archiveArtifacts artifacts: 'htmlcov/**', allowEmptyArchive: true
+            }
+        }
+
+        stage('SecurityScan') {
+            steps {
+                sh "source ${VIRTUAL_ENV}/bin/activate && bandit -r ."
+            }
+        }
+
         stage('Deploy') { 
             steps {
-                echo "Deploying application..."
+                script {
+                    echo "Deploying application..."
+                    // Placeholder for deployment steps - replace with actual deployment commands
+                    // e.g., ssh, rsync, or scp commands to deploy to a remote server
+                    sh "echo 'Deploying to server...'" 
+                }
             }
         }
     }
