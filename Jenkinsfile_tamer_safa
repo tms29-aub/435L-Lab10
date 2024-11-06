@@ -2,19 +2,27 @@ pipeline {
     agent any
     environment { 
         VIRTUAL_ENV = 'venv'
+        PYTHON = '/path/to/python3'
     }
 
-    stages { 
+    options {
+        timeout(time: 10, unit: 'MINUTES') // Set a global timeout for the entire pipeline
+    }
+
+    stages {
         stage('Setup') {
-            steps { 
+            options {
+                timeout(time: 5, unit: 'MINUTES') // Timeout for this specific stage
+            }
+            steps {
                 script {
-                    if (!fileExists("${env.WORKSPACE}/${VIRTUAL_ENV}")) { 
-                        sh "python -m venv ${VIRTUAL_ENV}"
+                    if (!fileExists("${env.WORKSPACE}/${VIRTUAL_ENV}")) {
+                        sh "/bin/bash -c 'python3 -m venv ${VIRTUAL_ENV}'"
                     }
                 }
-                sh "source ${VIRTUAL_ENV}/bin/activate && pip install -r requirements.txt" 
+                sh "/bin/bash -c 'source ${VIRTUAL_ENV}/bin/activate && pip install -r requirements.txt'"
             }
-        } 
+        }
         
         stage('Lint') { 
             steps {
