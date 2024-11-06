@@ -17,10 +17,10 @@ pipeline {
             steps {
                 script {
                     if (!fileExists("${VIRTUAL_ENV}")) {
-                        sh "/bin/bash -c 'python3 -m venv ${VIRTUAL_ENV}'"
+                        sh "python3 -m venv ${VIRTUAL_ENV}"
                     }
                 }
-                sh "/bin/bash -c 'source ${VIRTUAL_ENV}/bin/activate && pip install -r requirements.txt'"
+                sh "source ${VIRTUAL_ENV}/bin/activate && pip install -r requirements.txt"
             }
         }
         
