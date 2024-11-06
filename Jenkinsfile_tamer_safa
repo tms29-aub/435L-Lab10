@@ -2,7 +2,7 @@ pipeline {
     agent any
     environment { 
         VIRTUAL_ENV = 'venv'
-        PYTHON = '/path/to/python3'
+        PYTHON = '/Users/tamersafa/.local/share/virtualenvs/storefront-KWPrtJCG/bin/python3'
     }
 
     options {
