@@ -6,7 +6,6 @@ pipeline {
     }
     
     stages {
-        sh """echo "This is a temporary script" > ${env.WORKSPACE}/script.sh.copy"""
         stage('Setup') {
             steps {
                 script {
