@@ -9,24 +9,33 @@ pipeline {
         stage('Setup') {
             steps {
                 script {
-                    if (!fileExists("${env.WORKSPACE}/${VIRTUAL_ENV}")) { 
-                        sh "python -m venv ${VIRTUAL_ENV}" 
-                    }
-                    sh "source ${VIRTUAL_ENV}/bin/activate && pip install -r requirements.txt"
+                    sh '''
+                    #!/bin/sh
+                    if [ ! -d "${VIRTUAL_ENV}" ]; then
+                        python -m venv ${VIRTUAL_ENV}
+                    fi
+                    source ${VIRTUAL_ENV}/bin/activate && pip install -r requirements.txt
+                    '''
                 }
             }
         }
         stage('Lint') {
             steps {
                 script {
-                    sh "source ${VIRTUAL_ENV}/bin/activate && flake8 app.py"
+                    sh '''
+                    #!/bin/sh
+                    source ${VIRTUAL_ENV}/bin/activate && flake8 app.py
+                    '''
                 }
             }
         }
         stage('Test') {
             steps {
                 script {
-                    sh "source ${VIRTUAL_ENV}/bin/activate && pytest"
+                    sh '''
+                    #!/bin/sh
+                    source ${VIRTUAL_ENV}/bin/activate && pytest
+                    '''
                 }
             }
         }
