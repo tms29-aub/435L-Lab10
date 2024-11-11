@@ -1,9 +1,11 @@
 pipeline {
+    System.setProperty("hudson.tasks.Shell.noCopyOnExecute", "true")
+
     agent any
 
     environment { 
         VIRTUAL_ENV = 'venv' 
-        SHELL = '/bin/bash -xe'
+        SHELL = '/bin/sh'
     }
 
     stages {
