@@ -3,6 +3,7 @@ pipeline {
 
     environment { 
         VIRTUAL_ENV = 'venv' 
+        SHELL = '/bin/sh'
     }
 
     stages {
