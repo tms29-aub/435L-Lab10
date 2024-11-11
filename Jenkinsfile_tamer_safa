@@ -4,6 +4,8 @@ pipeline {
     environment { 
         VIRTUAL_ENV = 'venv' 
     }
+
+    export SHELL='/bin/sh -xe'
     
     stages {
         stage('Run Script') {
