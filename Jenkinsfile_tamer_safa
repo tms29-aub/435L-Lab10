@@ -1,6 +1,6 @@
-pipeline {
-    System.setProperty("hudson.tasks.Shell.noCopyOnExecute", "true")
+System.setProperty("hudson.tasks.Shell.noCopyOnExecute", "true")
 
+pipeline {
     agent any
 
     environment { 
