@@ -1,8 +1,10 @@
 pipeline {
     agent any
+
     environment { 
         VIRTUAL_ENV = 'venv' 
     }
+    
     stages {
         stage('Setup') {
             steps {
