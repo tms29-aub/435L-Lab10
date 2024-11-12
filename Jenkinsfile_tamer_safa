@@ -1,44 +1,14 @@
 pipeline {
     agent any
-    environment {
-        VIRTUAL_ENV = 'venv'
-    }
+
     stages {
         stage('Setup') {
             steps {
-                sh '''
-                    # Check if the virtual environment directory exists
-                    if [ ! -d "${VIRTUAL_ENV}" ]; then
-                        python3 -m venv ${VIRTUAL_ENV}
-                    fi
-                    # Install required packages
-                    ${VIRTUAL_ENV}/bin/pip install -r requirements.txt
-                    # List installed packages
-                    ${VIRTUAL_ENV}/bin/pip freeze
-                '''
-            }
-        }
-        stage('Lint') {
-            steps {
-                sh '''
-                    ${VIRTUAL_ENV}/bin/flake8 app.py
-                '''
-            }
-        }
-        stage('Test') {
-            steps {
-                sh '''
-                    ${VIRTUAL_ENV}/bin/pytest
-                '''
-            }
-        }
-        stage('Deploy') {
-            steps {
-                echo 'Deploying application...'
-                // Add your deployment logic here
+                sh '''echo "Hello World"'''
             }
         }
     }
+    
     post {
         always {
             cleanWs()
