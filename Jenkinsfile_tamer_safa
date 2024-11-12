@@ -37,7 +37,7 @@ pipeline {
         }
         stage('SecurityScan') {
             steps {
-                sh "source ${VIRTUAL_ENV}/bin/activate && bandit -r ." 
+                sh "source ${VIRTUAL_ENV}/bin/activate && bandit -r . --exclude ${VIRTUAL_ENV} --quiet"
             }
         }
         stage('Deploy') {
