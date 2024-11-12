@@ -12,7 +12,7 @@ pipeline {
                         sh "python3 -m venv ${VIRTUAL_ENV}" 
                     }
                     sh "source ${VIRTUAL_ENV}/bin/activate && pip install -r requirements.txt"
-                    sh "source ${VIRTUAL_ENV}/bin/activate && pip install coverage" // Install coverage tool
+                    sh "source ${VIRTUAL_ENV}/bin/activate && pip install coverage bandit" // Install coverage and bandit tools
                 }
             }
         }
@@ -30,9 +30,14 @@ pipeline {
             steps {
                 script {
                     sh "source ${VIRTUAL_ENV}/bin/activate && coverage run -m pytest"
-                    sh "source ${VIRTUAL_ENV}/bin/activate && coverage report"
-                    sh "source ${VIRTUAL_ENV}/bin/activate && coverage html" 
+                    sh "source ${VIRTUAL_ENV}/bin/activate && coverage report" 
+                    sh "source ${VIRTUAL_ENV}/bin/activate && coverage html"
                 }
+            }
+        }
+        stage('SecurityScan') {
+            steps {
+                sh "source ${VIRTUAL_ENV}/bin/activate && bandit -r ." 
             }
         }
         stage('Deploy') {
