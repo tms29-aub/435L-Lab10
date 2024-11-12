@@ -41,10 +41,5 @@ pipeline {
             }
         }
     }
-    post { 
-        always {
-            // Commented out for debugging
-            // cleanWs()
-        }
-    }
+
 }
