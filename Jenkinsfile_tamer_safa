@@ -5,29 +5,34 @@ pipeline {
         VIRTUAL_ENV = 'venv' 
     }
 
+    options {
+        // Use bash shell globally
+        shell('/bin/bash')
+    }
+
     stages {
         stage('Setup') {
             steps {
-                script {
-                    if (!fileExists("${VIRTUAL_ENV}")) { 
-                        sh "python -m venv ${VIRTUAL_ENV}" 
-                    }
-                    sh "${VIRTUAL_ENV}/bin/pip install -r requirements.txt"
-                }
+                sh '''
+                    if [ ! -d "${VIRTUAL_ENV}" ]; then
+                        python -m venv ${VIRTUAL_ENV}
+                    fi
+                    ${VIRTUAL_ENV}/bin/pip install -r requirements.txt
+                '''
             }
         }
         stage('Lint') {
             steps {
-                script {
-                    sh "${VIRTUAL_ENV}/bin/flake8 app.py"
-                }
+                sh '''
+                    ${VIRTUAL_ENV}/bin/flake8 app.py
+                '''
             }
         }
         stage('Test') {
             steps {
-                script {
-                    sh "${VIRTUAL_ENV}/bin/pytest"
-                }
+                sh '''
+                    ${VIRTUAL_ENV}/bin/pytest
+                '''
             }
         }
         stage('Deploy') {
@@ -38,7 +43,8 @@ pipeline {
     }
     post { 
         always {
-            cleanWs()
+            // Commented out for debugging
+            // cleanWs()
         }
     }
 }
