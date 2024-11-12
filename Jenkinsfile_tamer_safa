@@ -1,45 +1,45 @@
 pipeline {
     agent any
-
-    environment { 
-        VIRTUAL_ENV = 'venv' 
-    }
-
-    options {
-        // Use bash shell globally
-        shell('/bin/bash')
-    }
-
+    environment {
+VIRTUAL_ENV = 'venv' }
     stages {
         stage('Setup') {
             steps {
-                sh '''
-                    if [ ! -d "${VIRTUAL_ENV}" ]; then
-                        python -m venv ${VIRTUAL_ENV}
-                    fi
-                    ${VIRTUAL_ENV}/bin/pip install -r requirements.txt
-                '''
+                script {
+                    if (!fileExists("${env.WORKSPACE}\\${VIRTUAL_ENV}")) {
+                        bat "python -m venv ${VIRTUAL_ENV}"
+                    }
+                    bat "${VIRTUAL_ENV}\\Scripts\\activate && pip install -r requirements.txt"
+                    bat "${VIRTUAL_ENV}\\Scripts\\activate && pip freeze"  // List installed packages
+                }
             }
         }
         stage('Lint') {
             steps {
-                sh '''
-                    ${VIRTUAL_ENV}/bin/flake8 app.py
-                '''
+                script {
+                    bat "${VIRTUAL_ENV}\\Scripts\\activate && flake8 app.py"
+                }
             }
         }
         stage('Test') {
             steps {
-                sh '''
-                    ${VIRTUAL_ENV}/bin/pytest
-                '''
+                script {
+                    bat "${VIRTUAL_ENV}\\Scripts\\activate && pytest"
+                }
             }
         }
         stage('Deploy') {
             steps {
-                echo "Deploying application..."
+                script {
+                    // Deployment logic, e.g., pushing to a remote server
+                    echo 'Deploying application...'
+                }
             }
         }
     }
-
+    post {
+        always {
+            cleanWs()
+        }
+    }
 }
