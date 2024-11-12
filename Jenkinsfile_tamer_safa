@@ -1,14 +1,17 @@
+def runShellCommand(command) {
+    def process = command.execute()
+    process.waitFor()
+    return process.text
+}
+
 pipeline {
     agent any
     stages {
-        stage('Run in Docker') {
+        stage('Run Custom Shell Command') {
             steps {
                 script {
-                    docker.image('ubuntu').inside {
-                        // Run a shell command inside the container
-                        echo 'Running command inside Ubuntu container'
-                        sh 'echo Hello from inside the container!'
-                    }
+                    def result = runShellCommand("echo Hello, custom command!")
+                    echo result
                 }
             }
         }
