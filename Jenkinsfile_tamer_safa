@@ -1,12 +1,13 @@
 pipeline {
     agent any
+    environment {
+    PATH = "/bin:/usr/bin:${env.PATH}"
+    }
+
     stages {
-        stage('Run Custom Shell Command') {
+        stage('Check PATH') {
             steps {
-                script {
-                    def result = sh(script: 'echo Hello, custom command!', returnStdout: true).trim()
-                    echo result
-                }
+                sh 'echo $PATH'
             }
         }
     }
