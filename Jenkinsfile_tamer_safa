@@ -17,8 +17,23 @@ pipeline {
         }
         stage('Lint') {
             steps {
-                sh "echo Done"
+                sh "source ${VIRTUAL_ENV}/bin/activate && flake8 app.py"
             }
+        }
+        stage('Test') {
+            steps {
+                sh "source ${VIRTUAL_ENV}/bin/activate && pytest"
+            }
+        }
+        stage('Deploy') {
+            steps {
+                echo "Deploying application..."
+            }
+        }
+    }
+    post {
+        always {
+            cleanWs()
         }
     }
 }
