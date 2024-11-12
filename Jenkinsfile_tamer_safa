@@ -1,17 +1,16 @@
 pipeline {
     agent any
-
     stages {
-        stage('Setup') {
+        stage('Run in Docker') {
             steps {
-                sh '''echo "Hello World"'''
+                script {
+                    docker.image('ubuntu').inside {
+                        // Run a shell command inside the container
+                        echo 'Running command inside Ubuntu container'
+                        sh 'echo Hello from inside the container!'
+                    }
+                }
             }
-        }
-    }
-    
-    post {
-        always {
-            cleanWs()
         }
     }
 }
