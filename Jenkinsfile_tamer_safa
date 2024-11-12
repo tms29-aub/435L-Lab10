@@ -44,18 +44,18 @@ pipeline {
             steps {
                 script {
                     // Ensure deployment directory exists
-                    sh "mkdir -p ${DEPLOY_DIR}"
+                    sh "mkdir -p ${env.DEPLOY_DIR}"
 
                     // Copy files to the deployment directory
-                    sh "cp -r * ${DEPLOY_DIR}/"
+                    sh "cp -r * ${env.DEPLOY_DIR}/"
 
                     // Activate virtual environment and start the application in the background
                     sh """
-                    cd ${DEPLOY_DIR}
-                    source ${env.WORKSPACE}/${VIRTUAL_ENV}/bin/activate
+                    cd ${env.DEPLOY_DIR}
+                    source ${env.WORKSPACE}/${env.VIRTUAL_ENV}/bin/activate
                     nohup python app.py &
                     """
-                    echo "Application deployed locally at ${DEPLOY_DIR} and started in the background."
+                    echo "Application deployed locally at ${env.DEPLOY_DIR} and started in the background."
                 }
             }
         }
