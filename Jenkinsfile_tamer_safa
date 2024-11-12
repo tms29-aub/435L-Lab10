@@ -1,16 +1,10 @@
-def runShellCommand(command) {
-    def process = command.execute()
-    process.waitFor()
-    return process.text
-}
-
 pipeline {
     agent any
     stages {
         stage('Run Custom Shell Command') {
             steps {
                 script {
-                    def result = runShellCommand("echo Hello, custom command!")
+                    def result = sh(script: 'echo Hello, custom command!', returnStdout: true).trim()
                     echo result
                 }
             }
